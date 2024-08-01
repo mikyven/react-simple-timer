@@ -13,9 +13,15 @@ const interval =
 const useSecondInterval = interval(1000);
 /* eslint-enable prettier/prettier */
 
+function detectMobile(): boolean {
+  const toMatch = [/Android/i, /webOS/i, /iPhone/i, /iPad/i, /iPod/i, /BlackBerry/i, /Windows Phone/i];
+  return toMatch.some((toMatchItem) => navigator.userAgent.match(toMatchItem));
+}
+
 function App(): ReactElement {
   const [time, setTime] = useState(0);
   const [isStarted, setIsStarted] = useState(false);
+  const isMobile = detectMobile();
   const minutes = Math.floor(time / 60);
   const seconds = time - minutes * 60;
 
@@ -75,36 +81,41 @@ function App(): ReactElement {
   useSecondInterval(tick);
 
   return (
-    <div className="timer">
-      <div className="time">
-        <div className="minutes time-element" onWheel={(e) => handleWheel(e, 'minutes')}>
-          <p style={{ width: minutes < 10 ? '65px' : '125px' }}>{minutes}</p>
-          <span className="time-unit">m</span>
+    <>
+      {isMobile && <div>Mobile isn't supported yet :)</div>}
+      {!isMobile && (
+        <div className="timer">
+          <div className="time">
+            <div className="minutes time-element" onWheel={(e) => handleWheel(e, 'minutes')}>
+              <p style={{ width: minutes < 10 ? '65px' : '125px' }}>{minutes}</p>
+              <span className="time-unit">m</span>
+            </div>
+            <div className="seconds time-element" onWheel={(e) => handleWheel(e, 'seconds')}>
+              <p style={{ width: '125px' }}>
+                {seconds < 10 && '0'}
+                {seconds}
+              </p>
+              <span className="time-unit">s</span>
+            </div>
+          </div>
+          <div className="button_container">
+            {!isStarted && (
+              <button className="start_button" onClick={() => startTimer()}>
+                Start
+              </button>
+            )}
+            {isStarted && (
+              <button className="stop_button" onClick={() => stopTimer()}>
+                Stop
+              </button>
+            )}
+            <button className="reset_button" onClick={() => resetTime()}>
+              Reset
+            </button>
+          </div>
         </div>
-        <div className="seconds time-element" onWheel={(e) => handleWheel(e, 'seconds')}>
-          <p style={{ width: '125px' }}>
-            {seconds < 10 && '0'}
-            {seconds}
-          </p>
-          <span className="time-unit">s</span>
-        </div>
-      </div>
-      <div className="button_container">
-        {!isStarted && (
-          <button className="start_button" onClick={() => startTimer()}>
-            Start
-          </button>
-        )}
-        {isStarted && (
-          <button className="stop_button" onClick={() => stopTimer()}>
-            Stop
-          </button>
-        )}
-        <button className="reset_button" onClick={() => resetTime()}>
-          Reset
-        </button>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 
