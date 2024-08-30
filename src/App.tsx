@@ -1,4 +1,5 @@
 import { ReactElement, useCallback, useEffect, useState, WheelEvent } from 'react';
+import clockImage from '../../../../../assets/clock.png';
 import './App.scss';
 
 /* eslint-disable prettier/prettier */
@@ -94,7 +95,7 @@ function App(): ReactElement {
     if (isStarted) {
       if (time === 1) {
         resetTime();
-        const img = '/assets/clock.png';
+        const img = clockImage;
         const text = 'Your timer has ended.';
         // eslint-disable-next-line no-new
         new Notification('Timer', { body: text, icon: img });
