@@ -1,6 +1,6 @@
 .timer {
   height: 400px;
-  width: 400px;
+  width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,6 +16,7 @@
     position: relative;
     display: flex;
     justify-content: center;
+    justify-self: flex-end;
     gap: 10px;
     font-size: 96px;
     margin: 0 0 20px;
@@ -24,18 +25,25 @@
       position: relative;
       display: flex;
       align-items: flex-end;
-      justify-content: center;
+      justify-content: flex-end;
+      width: 160px;
 
       p {
         margin: 0;
         text-align: right;
       }
 
+      &:not(:first-child) p {
+        width: 125px;
+      }
+
       .time-unit {
         margin-bottom: 10px;
-        margin-right: 5px;
+        margin-right: 10px;
         opacity: 0.5;
         font-size: 24px;
+        width: 20px;
+        text-align: right;
       }
 
       &:hover:after {
@@ -47,6 +55,12 @@
         background-color: black;
         filter: opacity(20%);
         border-radius: 10px;
+      }
+
+      @media (prefers-color-scheme: light) {
+        &:hover::after {
+          filter: opacity(10%);
+        }
       }
     }
   }
